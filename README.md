@@ -38,9 +38,8 @@ Regression tests compare every default hourly dispatch field and all strategy su
 Create an empty GitHub repository named `helioflex` under the deployment account. From this repository run:
 
 ```sh
-git remote add origin https://github.com/hibscolony/helioflex.git
+git remote set-url origin https://github.com/hibscolony/helioflex.git
 git push -u origin main
 ```
 
 In [Streamlit Community Cloud](https://share.streamlit.io/), choose **Create app**, select **hibscolony/helioflex**, branch **main**, and main file **streamlit_app.py**. Choose Python 3.12 in advanced settings, then deploy. If using a different GitHub owner, replace the account in the remote and Cloud settings. All data and runtime dependencies travel with the repository. The app needs no broker, credentials, Kaggle runtime or external data download.
-
