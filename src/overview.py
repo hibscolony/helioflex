@@ -1,5 +1,4 @@
 import pandas as pd
-import plotly.graph_objects as go
 import streamlit as st
 from src.data_loader import POLICIES, table, saved
 from src.ui import cards, header, series
@@ -97,31 +96,62 @@ def show():
     )
     if not f.empty:
         st.subheader("Scenario power flow")
-        st.caption(
-            "Energy delivered over the selected dispatch hours · kWh. Hover over a connection for its total."
-        )
-        fig = go.Figure(
-            go.Sankey(
-                valueformat=",.1f",
-                valuesuffix=" kWh",
-                node=dict(
-                    label=["Solar PV", "Campus load", "Battery", "Grid", "Curtailment"],
-                    color=["#108368", "#305c57", "#cf923b", "#6796ac", "#aaa69a"],
-                ),
-                link=dict(
-                    source=[0, 0, 2, 3, 0],
-                    target=[1, 2, 1, 1, 4],
-                    value=[
-                        f[["pv_kwh", "load_kwh"]].min(axis=1).sum(),
-                        f.charge_kwh.sum(),
-                        f.discharge_kwh.sum(),
-                        f.grid_import_kwh.sum(),
-                        f.curtailment_kwh.sum(),
-                    ],
-                ),
+        direct = f[["pv_kwh", "load_kwh"]].min(axis=1).sum()
+        groups = [
+            (
+                "Campus supply",
+                "Campus demand",
+                f.load_kwh.sum(),
+                [
+                    ("Grid → Campus", f.grid_import_kwh.sum(), "#497aa6"),
+                    ("Solar PV → Campus", direct, "#16846e"),
+                    ("Battery → Campus", f.discharge_kwh.sum(), "#8a66aa"),
+                ],
+            ),
+            (
+                "Solar allocation",
+                "Scenario PV",
+                f.pv_kwh.sum(),
+                [
+                    ("Solar PV → Campus", direct, "#16846e"),
+                    ("Solar PV → Battery", f.charge_kwh.sum(), "#c58a21"),
+                    ("Curtailed solar", f.curtailment_kwh.sum(), "#b46d51"),
+                ],
+            ),
+        ]
+        panels = []
+        for title, basis, total, routes in groups:
+            rows = []
+            for label, energy, color in routes:
+                share = energy / total * 100 if total else 0
+                percentage = f"{share:.2f}%" if total else "—"
+                rows.append(
+                    f"""
+                    <div class="hf-route"><div><b>{label}</b><span>{energy:,.1f} kWh</span></div>
+                    <div><i aria-hidden="true"><em style="width:{share:.8f}%;background:{color}"></em></i>
+                    <small>{percentage}</small></div></div>"""
+                )
+            panels.append(
+                f'<section><h4>{title}</h4><p>{basis} · {total:,.1f} kWh</p>{"".join(rows)}</section>'
             )
+        st.html(
+            """
+            <style>
+            .hf-flows{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+            .hf-flows section{background:#f6faf8;border:1px solid #d4e5df;border-radius:16px;padding:20px;color:#193b32}
+            .hf-flows h4{font-size:1.15rem;margin:0;padding:0}
+            .hf-flows p{font-size:.84rem;color:#4b655b;margin:3px 0 18px}
+            .hf-route+.hf-route{margin-top:16px}
+            .hf-route div{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+            .hf-route b,.hf-route span{font-size:.9rem}
+            .hf-route span,.hf-route small{font-variant-numeric:tabular-nums}
+            .hf-route i{flex:1;height:6px;background:#dde8e4;border-radius:5px;overflow:hidden}
+            .hf-route em{display:block;height:100%;border-radius:5px}
+            .hf-route small{font-size:.77rem;color:#4b655b}
+            </style><div class="hf-flows">"""
+            + "".join(panels)
+            + "</div>"
         )
-        st.plotly_chart(fig, width="stretch")
     with st.expander("Units and calculations"):
         st.write(
             "Each row represents one hour. Energy (kWh) equals mean power (kW) × 1 h. PV + import + discharge = load + charge + curtailment. Utilization = 100 × (generation − curtailment) / generation. Peak is the largest hourly grid import divided by 1 h. Cost sums hourly import × tariff. SOC is the final stored energy."
