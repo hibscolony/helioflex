@@ -1,0 +1,7 @@
+kind,score,file,sheet,header,column,values
+load,14,/kaggle/working/helioflex_data/raw/Electricity load & Heating load & Cooling load & Hot water load_extracted/Electricity load & Heating load & Cooling load & Hot water_Time series__2020.xlsx,Sheet1,0,Electricity load (kW),"[404, 411, 410]"
+load,14,/kaggle/working/helioflex_data/raw/Electricity load & Heating load & Cooling load & Hot water load_extracted_7z/Electricity load & Heating load & Cooling load & Hot water_Time series__2020.xlsx,Sheet1,0,Electricity load (kW),"[404, 411, 410]"
+load,14,/kaggle/working/helioflex_data/raw/Raw Data_extracted_7z/Electricity load & Heating load & Cooling load & Hot water load/Time series__2020.xlsx,Sheet1,0,Electricity load (kW),"[404, 411, 410]"
+load,14,/kaggle/working/helioflex_data/raw/Raw Data_extracted/Electricity load & Heating load & Cooling load & Hot water load/Time series__2020.xlsx,Sheet1,0,Electricity load (kW),"[404, 411, 410]"
+pv,12,/kaggle/working/helioflex_data/raw/Power_extracted_7z/Power_time series__2020.xlsx,Sheet1,0,Solar energy generation (kW),"[0, 0, 0]"
+pv,12,/kaggle/working/helioflex_data/raw/Power_extracted/Power_time series__2020.xlsx,Sheet1,0,Solar energy generation (kW),"[0, 0, 0]"

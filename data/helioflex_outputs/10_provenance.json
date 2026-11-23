@@ -1,0 +1,42 @@
+{
+  "dataset_doi": "10.6084/m9.figshare.24978645",
+  "paper_doi": "10.1038/s41597-024-04244-6",
+  "measured_year": 2020,
+  "selected_sources": {
+    "pv": {
+      "file": "/kaggle/working/helioflex_data/raw/Power_extracted_7z/Power_time series__2020.xlsx",
+      "sheet": "Sheet1",
+      "header": 0,
+      "column": "Solar energy generation (kW)"
+    },
+    "load": {
+      "file": "/kaggle/working/helioflex_data/raw/Electricity load & Heating load & Cooling load & Hot water load_extracted/Electricity load & Heating load & Cooling load & Hot water_Time series__2020.xlsx",
+      "sheet": "Sheet1",
+      "header": 0,
+      "column": "Electricity load (kW)"
+    }
+  },
+  "train_range": [
+    "2020-01-08 00:00:00",
+    "2020-09-15 06:00:00"
+  ],
+  "valid_range": [
+    "2020-09-15 07:00:00",
+    "2020-11-08 02:00:00"
+  ],
+  "test_range": [
+    "2020-11-08 03:00:00",
+    "2020-12-31 23:00:00"
+  ],
+  "selected_prediction_models": {
+    "pv_kw": "Persistence_lag24",
+    "load_kw": "HistGradientBoost"
+  },
+  "solar_capacity_scenario_multiplier": 50.0,
+  "battery_kwh_assumed": 1280.2387663737356,
+  "battery_kw_assumed": 288.0537224340905,
+  "currency_tariff": "IDR hypothetical model assumption, not historical utility bill",
+  "co2_factor": "Illustrative assumption, not measured",
+  "iot": "virtual replay only; no physical sensor/actuator",
+  "notes": "PV and load observed, but energy management savings and battery states are counterfactual simulations."
+}

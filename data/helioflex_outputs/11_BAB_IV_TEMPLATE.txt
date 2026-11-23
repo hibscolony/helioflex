@@ -1,0 +1,10 @@
+RANCANGAN HASIL BAB IV - HELIOFLEX
+
+Data observasional: Kitakyushu Science and Research Park; lihat manifest dan provenance.
+Tahun 2020, 8784 jam valid, train/valid/test split berdasarkan waktu.
+Tabel 1: data_quality_summary.csv
+Tabel 2: 02_forecast_comparison.csv
+Tabel 3: 05_strategy_comparison.csv
+Tabel 4: 08_sensitivity.csv
+Semua tarif, PV tambahan, baterai, emisi, dan IoT adalah asumsi/simulasi; bukan pengukuran lapangan.
+Jelaskan bila strategi HELIOFLEX tidak mengungguli Rule-Based.

@@ -1,0 +1,7 @@
+,value
+observed_hours,8784.0
+pv_measured_kwh,19846.0
+electricity_load_measured_kwh,5597582.0
+pv_vs_load_energy_ratio,0.003545459450169734
+original_missing_pv_fraction,0.0
+original_missing_load_fraction,0.0
