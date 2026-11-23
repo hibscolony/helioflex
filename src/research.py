@@ -10,11 +10,11 @@ METRICS = {
     "Solar utilization (%)": "PV_utilization_pct",
     "Curtailment (kWh)": "curtailed_kwh",
     "Scenario bill (IDR)": "scenario_bill_idr",
-    "Illustrative emissions (kg COâ‚‚)": "illustrative_grid_co2_kg",
+    "Illustrative emissions (kg CO₂)": "illustrative_grid_co2_kg",
 }
 LIMITS = "Rule-based control captures more surplus solar and yields the lowest scenario bill. HELIOFLEX follows a day-ahead plan whose charge and discharge targets can miss actual surplus or demand. Test intraday replanning and forecast uncertainty on additional years before drawing campus-wide conclusions."
 METHOD = "Measurements come from Kitakyushu Science and Research Park in 2020. Hourly load and PV drive the experiment. After constructing lagged features, the notebook splits records chronologically into 70% training, 15% validation and 15% test. Validation MAE determines model selection. Models are refitted on training and validation data before held-out evaluation."
-ASSUMPTIONS = "Expanded PV, battery storage, tariff and grid emissions are scenario assumptions. Storage charges only from surplus solar. The hypothetical bill includes energy charges at IDR 1,500/kWh off peak and 2,200/kWh during 17:00â€“21:59. Emissions equal grid import Ã— 0.70 kg COâ‚‚/kWh. Savings exclude capital costs."
+ASSUMPTIONS = "Expanded PV, battery storage, tariff and grid emissions are scenario assumptions. Storage charges only from surplus solar. The hypothetical bill includes energy charges at IDR 1,500/kWh off peak and 2,200/kWh during 17:00–21:59. Emissions equal grid import × 0.70 kg CO₂/kWh. Savings exclude capital costs."
 PATHWAY = "Audit rooftop area and electrical limits, collect site tariffs and metering data, then compare controllers in shadow operation before a supervised hardware pilot."
 
 
@@ -38,7 +38,7 @@ def forecasting():
     )
     ranks.index += 1
     best = ranks.iloc[0]
-    st.subheader(f"Validation selection Â· {best.model}")
+    st.subheader(f"Validation selection · {best.model}")
     cards(
         [
             (c, f"{best[k]:.2f} {unit}", "Held-out test")
@@ -62,7 +62,7 @@ def forecasting():
     )
     st.image(
         str(DATA / f"03_forecast_{target}.png"),
-        caption="Original Kaggle figure Â· first week of the held-out period",
+        caption="Original Kaggle figure · first week of the held-out period",
     )
     with st.expander("Model selection and time split"):
         st.write(METHOD)
@@ -72,7 +72,7 @@ def forecasting():
             ("Validation", "valid_range"),
             ("Test", "test_range"),
         ]:
-            st.caption(f"{label} Â· {' through '.join(p[key])}")
+            st.caption(f"{label} · {' through '.join(p[key])}")
         st.write(
             "Calendar variables are known in advance. Both signals use 24-hour and 168-hour lags, and the rolling mean starts 24 hours back. The test period plays no role in model selection. PV persistence wins on validation MAE. Low total solar production makes WAPE sensitive to modest absolute errors."
         )
@@ -131,10 +131,10 @@ def report():
     header(
         "Research impact & report",
         "Experiment record",
-        "EcoVibes 2026 Â· National Scientific Writing Competition",
+        "EcoVibes 2026 · National Scientific Writing Competition",
     )
     p = provenance()
-    citations = f"[Figshare dataset](https://doi.org/{p['dataset_doi']}) Â· [Scientific Data paper](https://doi.org/{p['paper_doi']})"
+    citations = f"[Figshare dataset](https://doi.org/{p['dataset_doi']}) · [Scientific Data paper](https://doi.org/{p['paper_doi']})"
     tables = {
         label: table(key)
         for label, key in [
@@ -153,7 +153,7 @@ def report():
             csv_button("Download " + label.lower() + " CSV", df, label + ".csv")
     st.image(
         str(DATA / "07_grid_profile.png"),
-        caption="Archived experiment Â· grid import under the three policies",
+        caption="Archived experiment · grid import under the three policies",
     )
     st.subheader("Assumptions and limitations")
     st.write(ASSUMPTIONS)

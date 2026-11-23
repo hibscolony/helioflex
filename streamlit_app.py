@@ -18,7 +18,8 @@ with st.sidebar:
     page = st.radio("Workspace", pages)
     st.divider()
     st.caption("EcoVibes 2026 · Research prototype")
-    st.caption("AI-Powered Solar Energy Orchestration & Digital Twin")
+    with st.expander("About HELIOFLEX"):
+        st.caption("AI-Powered Solar Energy Orchestration & Digital Twin")
 try:
     observations = table("measured_pv_load_hourly")
     st.sidebar.success(f"Historical dataset · {len(observations):,} hours")
