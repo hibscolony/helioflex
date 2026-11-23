@@ -9,13 +9,14 @@ def show():
     header(
         "Energy overview",
         "Energy command center",
-        "Explore campus measurements alongside the hourly dispatch experiment.",
+        "Kitakyushu · 2020",
     )
     observed = table("measured_pv_load_hourly")
-    policy = st.selectbox("Dispatch strategy", POLICIES, index=2)
+    left, right = st.columns([1, 2])
+    policy = left.selectbox("Dispatch strategy", POLICIES, index=2)
     dispatch = saved(policy)
     lo, hi = dispatch.index[[0, -1]].date
-    dates = st.date_input(
+    dates = right.date_input(
         "Analysis window",
         (lo, hi),
         min_value=observed.index.min().date(),
@@ -32,18 +33,18 @@ def show():
             (
                 "Solar generation",
                 f"{m.pv_kw.sum():,.0f} kWh",
-                "Observed · selected dates",
+                "Observed Â· selected dates",
             ),
             (
                 "Campus consumption",
                 f"{m.load_kw.sum():,.0f} kWh",
-                "Observed · selected dates",
+                "Observed Â· selected dates",
             ),
         ]
     )
     if not f.empty:
         st.caption(
-            f"Scenario coverage · {f.index.min()} through {f.index.max()} · {len(f):,} hourly records"
+            f"Scenario coverage Â· {f.index.min()} through {f.index.max()} Â· {len(f):,} hourly records"
         )
         pv = f.pv_kwh.sum()
         utilization = (
@@ -56,18 +57,18 @@ def show():
                 (
                     "Grid import",
                     f"{f.grid_import_kwh.sum():,.1f} kWh",
-                    policy + " · simulated",
+                    policy + " Â· simulated",
                 ),
-                ("Solar utilization", utilization, "Scenario · includes charging"),
+                ("Solar utilization", utilization, "Scenario Â· includes charging"),
                 (
                     "Peak grid demand",
                     f"{f.grid_import_kwh.max():,.0f} kW",
-                    "Scenario · hourly mean",
+                    "Scenario Â· hourly mean",
                 ),
                 (
                     "Ending battery SOC",
                     f"{f.soc_kwh.iloc[-1]:,.1f} kWh",
-                    "Scenario · stored energy",
+                    "Scenario Â· stored energy",
                 ),
                 (
                     "Electricity cost",
@@ -76,8 +77,8 @@ def show():
                 ),
                 (
                     "Grid emissions",
-                    f"{.7*f.grid_import_kwh.sum():,.0f} kg CO₂",
-                    "Illustrative · 0.70 kg/kWh",
+                    f"{.7*f.grid_import_kwh.sum():,.0f} kg COâ‚‚",
+                    "Illustrative Â· 0.70 kg/kWh",
                 ),
             ]
         )
@@ -97,7 +98,7 @@ def show():
     if not f.empty:
         st.subheader("Scenario power flow")
         st.caption(
-            "Energy delivered over the selected dispatch hours · kWh. Hover over a connection for its total."
+            "Energy delivered over the selected dispatch hours Â· kWh. Hover over a connection for its total."
         )
         fig = go.Figure(
             go.Sankey(
@@ -123,5 +124,5 @@ def show():
         st.plotly_chart(fig, width="stretch")
     with st.expander("Units and calculations"):
         st.write(
-            "Each row represents one hour. Energy (kWh) equals mean power (kW) × 1 h. PV + import + discharge = load + charge + curtailment. Utilization = 100 × (generation − curtailment) / generation. Peak is the largest hourly grid import divided by 1 h. Cost sums hourly import × tariff. SOC is the final stored energy."
+            "Each row represents one hour. Energy (kWh) equals mean power (kW) Ã— 1 h. PV + import + discharge = load + charge + curtailment. Utilization = 100 Ã— (generation âˆ’ curtailment) / generation. Peak is the largest hourly grid import divided by 1 h. Cost sums hourly import Ã— tariff. SOC is the final stored energy."
         )
